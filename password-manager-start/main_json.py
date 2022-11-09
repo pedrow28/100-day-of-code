@@ -23,6 +23,29 @@ def generate_password():
     password = "".join(password_list)
     entry_password.insert(0, password)
 
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+
+
+def find_password():
+    try:
+        with open("data.json", "r") as data_text:
+            # Reading old data
+            data = json.load(data_text)
+    except FileNotFoundError:
+        messagebox.showinfo(title="Oops", message="No Data File Found!")
+    else:
+        website_name = entry_website.get()
+
+        if website_name in data: # Getting the info
+            user_search = data[website_name]["user"]
+            password_search = data[website_name]["password"]
+            messagebox.showinfo(title="Search", message=f"User: {user_search}\n Password: {password_search}")
+        else:
+            messagebox.showinfo(title="Search", message="There is no info for this website.")
+
+
+
+
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 # Commando to write info to txt file
@@ -88,20 +111,22 @@ label_password.grid(column=0, row=3)
 
 # Entries
 
-entry_website = Entry(width=35)
-entry_website.grid(column=1, row=1, columnspan=2)
+entry_website = Entry(width=21)
+entry_website.grid(column=1, row=1)
 entry_website.focus()  # Places the cursor in the query
 entry_email_username = Entry(width=35)
 entry_email_username.grid(column=1, row=2, columnspan=2)
-entry_email_username.insert(0, "pedrowilliamrd@gmail.com")  # Insert the text on the 0th caracter
+entry_email_username.insert(0, "pedrowilliamrd@gmail.com")  # Insert the text on the 0th character
 entry_password = Entry(width=21)
 entry_password.grid(column=1, row=3)
 
 # Buttons
 
+search_button = Button(text="Search", command=find_password)
+search_button.grid(column=2, row=1)
 password_button = Button(text="Generate password", command=generate_password)
 password_button.grid(column=2, row=3)
-add_button = Button(text="Add", width=36, command=add_button_command)
+add_button = Button(text="Add", width=35, command=add_button_command)
 add_button.grid(column=1, row=4, columnspan=2)
 clipboard_button = Button(text="Add to clipboard", command=pyperclip.copy)
 clipboard_button.grid(column=1, row=5, columnspan=2)
